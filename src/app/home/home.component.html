@@ -1,0 +1,42 @@
+<!-- home.component.html (ワイヤーフレーム実装) -->
+<div class="home-container" [style.background-image]="'url(' + backgroundPath + ')'">
+
+    <!-- 1. 情報メニュー -->
+    <button
+      class="menu-button"
+      (click)="onInfoClick()"
+      [@buttonPress]="infoPressed ? 'pressed' : 'idle'">
+      情報メニュー
+    </button>
+  
+    <!-- 2. キャラクター表示領域 -->
+    <div
+      class="character"
+      (click)="onCharacterClick($event)"
+      [@buttonPress]="characterPressed ? 'pressed' : 'idle'">
+      <img [src]="currentCharacterImage" class="character-img" alt="キャラ画像" />
+    </div>
+  
+    <!-- 3〜7. ゲームボタン群 -->
+    <div class="game-buttons">
+      <button
+        *ngFor="let game of gameList; let i = index"
+        class="menu-button"
+        (click)="onGameClick(i)"
+        [@buttonPress]="gamePressed[i] ? 'pressed' : 'idle'">
+        ゲーム{{ i + 1 }}
+      </button>
+    </div>
+  
+    <!-- 8. ギャラリー＆コンフィグ -->
+    <button
+      class="menu-button"
+      (click)="onGalleryClick()"
+      [@buttonPress]="galleryPressed ? 'pressed' : 'idle'">
+      ギャラリー / コンフィグ
+    </button>
+  
+    <app-mute-button></app-mute-button>
+  
+</div>
+  

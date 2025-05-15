@@ -1,0 +1,30 @@
+<div class="game-select-container">
+  <h2>ミニゲーム選択</h2>
+  
+  <div class="games-grid">
+    <div *ngFor="let game of games" class="game-card" (click)="selectGame(game)">
+      <img [src]="game.thumbnail" [alt]="game.title">
+      <p>{{ game.title }}</p>
+    </div>
+  </div>
+
+  <button class="back-button" (click)="goBack()">戻る</button>
+
+  <app-game-modal
+    [isOpen]="isModalOpen"
+    [title]="selectedGame?.title || ''"
+    (close)="closeModal()">
+    <div *ngIf="selectedGame">
+      <ng-container *ngTemplateOutlet="gameContent; context: { $implicit: selectedGame }"></ng-container>
+    </div>
+  </app-game-modal>
+</div>
+
+<ng-template #gameContent let-game>
+  <ng-container *ngIf="game.component">
+    <ng-container *ngComponentOutlet="game.component"></ng-container>
+  </ng-container>
+  <div *ngIf="!game.component" class="game-placeholder">
+    <p>coming soon</p>
+  </div>
+</ng-template>

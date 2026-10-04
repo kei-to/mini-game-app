@@ -1,15 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import { SettingsService, GameSettings } from '../services/settings.service';
 import { Router } from '@angular/router';
 import { MuteButtonComponent } from '../shared/components/mute-button/mute-button.component';
 
 @Component({
-  selector: 'app-config',
-  standalone: true,
-  imports: [CommonModule, FormsModule, MuteButtonComponent],
-  template: `
+    selector: 'app-config',
+    imports: [FormsModule, MuteButtonComponent],
+    template: `
     <div class="config-container">
       <app-mute-button></app-mute-button>
       <div class="header">
@@ -52,7 +51,7 @@ import { MuteButtonComponent } from '../shared/components/mute-button/mute-butto
       <button class="reset-button" (click)="resetSettings()">設定をリセット</button>
     </div>
   `,
-  styles: [`
+    styles: [`
     .config-container {
       padding: 20px;
       max-width: 600px;

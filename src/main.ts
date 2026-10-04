@@ -7,8 +7,9 @@ import { registerLocaleData } from '@angular/common';
 import localeJa from '@angular/common/locales/ja';
 import { SoundService } from './app/services/sound.service';
 import { BgmService } from './app/services/bgm.service';
-import { APP_INITIALIZER, importProvidersFrom } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import { inject, provideAppInitializer } from '@angular/core';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { AuthInterceptor } from './app/services/auth.interceptor';
 import 'zone.js';
 
 registerLocaleData(localeJa);
@@ -29,12 +30,11 @@ bootstrapApplication(AppComponent, {
   providers: [
     provideRouter(routes),
     provideAnimations(),
-    importProvidersFrom(HttpClientModule),
-    {
-      provide: APP_INITIALIZER,
-      useFactory: initializeServices,
-      deps: [SoundService, BgmService],
-      multi: true
-    }
+    provideHttpClient(withInterceptorsFromDi()),
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    provideAppInitializer(() => {
+        const initializerFn = (initializeServices)(inject(SoundService), inject(BgmService));
+        return initializerFn();
+      })
   ]
 }).catch(err => console.error(err));

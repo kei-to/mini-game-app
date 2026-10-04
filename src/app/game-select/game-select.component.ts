@@ -12,11 +12,10 @@ interface Game {
 }
 
 @Component({
-  selector: 'app-game-select',
-  templateUrl: './game-select.component.html',
-  styleUrls: ['./game-select.component.scss'],
-  standalone: true,
-  imports: [CommonModule, GameModalComponent]
+    selector: 'app-game-select',
+    templateUrl: './game-select.component.html',
+    styleUrls: ['./game-select.component.scss'],
+    imports: [CommonModule, GameModalComponent]
 })
 export class GameSelectComponent {
   games: Game[] = [

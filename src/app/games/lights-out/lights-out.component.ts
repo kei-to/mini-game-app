@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { SettingsService } from '../../services/settings.service';
 
 interface Cell {
@@ -24,78 +24,83 @@ interface GridSize {
 }
 
 @Component({
-  selector: 'app-lights-out',
-  standalone: true,
-  imports: [CommonModule],
-  template: `
+    selector: 'app-lights-out',
+    imports: [],
+    template: `
     <div class="game-container">
       <div class="game-header">
         <div class="difficulty-selector">
-          <button 
-            *ngFor="let diff of difficulties" 
-            [class.active]="currentDifficulty === diff"
-            (click)="changeDifficulty(diff)">
-            {{ getDifficultyLabel(diff) }}
-          </button>
+          @for (diff of difficulties; track diff) {
+            <button
+              [class.active]="currentDifficulty === diff"
+              (click)="changeDifficulty(diff)">
+              {{ getDifficultyLabel(diff) }}
+            </button>
+          }
         </div>
         <div class="game-info">
           <div class="timer">時間: {{ formatTime(elapsedTime) }}</div>
           <div class="moves">手数: {{ moves }}</div>
         </div>
       </div>
-
-      <div class="game-board" 
-           [style.grid-template-columns]="'repeat(' + gridSize.cols + ', 1fr)'"
-           [style.grid-template-rows]="'repeat(' + gridSize.rows + ', 1fr)'">
+    
+      <div class="game-board"
+        [style.grid-template-columns]="'repeat(' + gridSize.cols + ', 1fr)'"
+        [style.grid-template-rows]="'repeat(' + gridSize.rows + ', 1fr)'">
         <div class="background-image">
           <img [src]="getBackgroundImage()" [alt]="'背景画像 - ' + getDifficultyLabel(currentDifficulty)">
         </div>
-        <div
-          *ngFor="let cell of cells"
-          class="cell"
-          [class.blurred]="cell.isBlurred"
-          (click)="toggleCell(cell)"
-          [attr.aria-label]="'マス ' + (cell.row + 1) + '-' + (cell.col + 1) + ' ' + (cell.isBlurred ? 'ボカシあり' : 'ボカシなし')"
-          tabindex="0"
-          (keydown.enter)="toggleCell(cell)"
-          (keydown.space)="toggleCell(cell)">
-          <img [src]="cell.transparentImage" [alt]="'透過画像 - ' + getDifficultyLabel(currentDifficulty)">
-        </div>
+        @for (cell of cells; track cell) {
+          <div
+            class="cell"
+            [class.blurred]="cell.isBlurred"
+            (click)="toggleCell(cell)"
+            [attr.aria-label]="'マス ' + (cell.row + 1) + '-' + (cell.col + 1) + ' ' + (cell.isBlurred ? 'ボカシあり' : 'ボカシなし')"
+            tabindex="0"
+            (keydown.enter)="toggleCell(cell)"
+            (keydown.space)="toggleCell(cell)">
+            <img [src]="cell.transparentImage" [alt]="'透過画像 - ' + getDifficultyLabel(currentDifficulty)">
+          </div>
+        }
       </div>
-
+    
       <div class="controls">
         <button (click)="resetGame()">リセット</button>
       </div>
-
-      <div class="score-board" *ngIf="highScores[currentDifficulty]">
-        <h3>ハイスコア</h3>
-        <div class="score-item">
-          <span>最短手数:</span>
-          <span>{{ highScores[currentDifficulty]!.moves }}手</span>
+    
+      @if (highScores[currentDifficulty]) {
+        <div class="score-board">
+          <h3>ハイスコア</h3>
+          <div class="score-item">
+            <span>最短手数:</span>
+            <span>{{ highScores[currentDifficulty]!.moves }}手</span>
+          </div>
+          <div class="score-item">
+            <span>クリア時間:</span>
+            <span>{{ formatTime(highScores[currentDifficulty]!.time) }}</span>
+          </div>
+          <div class="score-item">
+            <span>達成日時:</span>
+            <span>{{ highScores[currentDifficulty]!.date }}</span>
+          </div>
+          <div class="score-item">
+            <span>クリア回数:</span>
+            <span>{{ highScores[currentDifficulty]!.clearCount }}回</span>
+          </div>
         </div>
-        <div class="score-item">
-          <span>クリア時間:</span>
-          <span>{{ formatTime(highScores[currentDifficulty]!.time) }}</span>
+      }
+    
+      @if (isGameWon) {
+        <div class="win-message">
+          <h2>クリア！</h2>
+          <p>手数: {{ moves }}</p>
+          <p>時間: {{ formatTime(elapsedTime) }}</p>
+          <p>難易度: {{ getDifficultyLabel(currentDifficulty) }}</p>
         </div>
-        <div class="score-item">
-          <span>達成日時:</span>
-          <span>{{ highScores[currentDifficulty]!.date }}</span>
-        </div>
-        <div class="score-item">
-          <span>クリア回数:</span>
-          <span>{{ highScores[currentDifficulty]!.clearCount }}回</span>
-        </div>
-      </div>
-
-      <div *ngIf="isGameWon" class="win-message">
-        <h2>クリア！</h2>
-        <p>手数: {{ moves }}</p>
-        <p>時間: {{ formatTime(elapsedTime) }}</p>
-        <p>難易度: {{ getDifficultyLabel(currentDifficulty) }}</p>
-      </div>
+      }
     </div>
-  `,
-  styles: [`
+    `,
+    styles: [`
     .game-container {
       display: flex;
       flex-direction: column;

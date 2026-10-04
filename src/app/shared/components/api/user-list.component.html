@@ -1,0 +1,37 @@
+<section class="user-list">
+  <div class="user-list__header">
+    <h2>ユーザー一覧</h2>
+    <button type="button" class="refresh-button" (click)="loadUsers()">
+      再読込
+    </button>
+  </div>
+
+  <div *ngIf="loading" class="user-list__loading">
+    読み込み中...
+  </div>
+
+  <div *ngIf="errorMessage" class="user-list__error">
+    {{ errorMessage }}
+  </div>
+
+  <ul *ngIf="!loading && users.length > 0" class="user-list__items">
+    <li *ngFor="let user of users" class="user-item">
+      <div class="user-item__info">
+        <span class="user-item__name">{{ user.name }}</span>
+        <span class="user-item__email">{{ user.email }}</span>
+      </div>
+
+      <button
+        type="button"
+        class="user-item__delete"
+        (click)="deleteUser(user.id)"
+      >
+        削除
+      </button>
+    </li>
+  </ul>
+
+  <div *ngIf="!loading && users.length === 0 && !errorMessage" class="user-list__empty">
+    ユーザーがありません。
+  </div>
+</section>

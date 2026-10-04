@@ -1,0 +1,91 @@
+.user-list {
+  max-width: 600px;
+  margin: 24px auto;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.user-list__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.user-list__header h2 {
+  margin: 0;
+  font-size: 1.4rem;
+}
+
+.refresh-button {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 8px;
+  background: #3b82f6;
+  color: white;
+  cursor: pointer;
+}
+
+.user-list__loading,
+.user-list__error,
+.user-list__empty {
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 12px;
+}
+
+.user-list__loading {
+  background: #eff6ff;
+  color: #1d4ed8;
+}
+
+.user-list__error {
+  background: #fef2f2;
+  color: #b91c1c;
+}
+
+.user-list__empty {
+  background: #f3f4f6;
+  color: #374151;
+}
+
+.user-list__items {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.user-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.user-item__info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.user-item__name {
+  font-weight: 600;
+}
+
+.user-item__email {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.user-item__delete {
+  padding: 8px 10px;
+  border: none;
+  border-radius: 8px;
+  background: #ef4444;
+  color: white;
+  cursor: pointer;
+}

@@ -1,12 +1,11 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { trigger, state, style, transition, animate } from '@angular/animations';
 
 @Component({
-  selector: 'app-game-modal',
-  standalone: true,
-  imports: [CommonModule],
-  template: `
+    selector: 'app-game-modal',
+    imports: [],
+    template: `
     <div class="modal-backdrop" [@backdropAnimation]="isOpen ? 'open' : 'closed'" (click)="onBackdropClick()">
       <div class="modal-container" [@modalAnimation]="isOpen ? 'open' : 'closed'" (click)="$event.stopPropagation()">
         <div class="modal-header">
@@ -19,7 +18,7 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
       </div>
     </div>
   `,
-  styles: [`
+    styles: [`
     .modal-backdrop {
       position: fixed;
       top: 0;
@@ -68,34 +67,34 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
       min-height: 200px;
     }
   `],
-  animations: [
-    trigger('backdropAnimation', [
-      state('closed', style({
-        opacity: 0,
-        visibility: 'hidden'
-      })),
-      state('open', style({
-        opacity: 1,
-        visibility: 'visible'
-      })),
-      transition('closed <=> open', [
-        animate('0.2s ease-in-out')
-      ])
-    ]),
-    trigger('modalAnimation', [
-      state('closed', style({
-        opacity: 0,
-        transform: 'scale(0.8)'
-      })),
-      state('open', style({
-        opacity: 1,
-        transform: 'scale(1)'
-      })),
-      transition('closed <=> open', [
-        animate('0.3s ease-in-out')
-      ])
-    ])
-  ]
+    animations: [
+        trigger('backdropAnimation', [
+            state('closed', style({
+                opacity: 0,
+                visibility: 'hidden'
+            })),
+            state('open', style({
+                opacity: 1,
+                visibility: 'visible'
+            })),
+            transition('closed <=> open', [
+                animate('0.2s ease-in-out')
+            ])
+        ]),
+        trigger('modalAnimation', [
+            state('closed', style({
+                opacity: 0,
+                transform: 'scale(0.8)'
+            })),
+            state('open', style({
+                opacity: 1,
+                transform: 'scale(1)'
+            })),
+            transition('closed <=> open', [
+                animate('0.3s ease-in-out')
+            ])
+        ])
+    ]
 })
 export class GameModalComponent {
   @Input() isOpen = false;

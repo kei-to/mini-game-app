@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { SettingsService } from '../../../services/settings.service';
 
 @Component({
-  selector: 'app-mute-button',
-  standalone: true,
-  imports: [CommonModule],
-  template: `
+    selector: 'app-mute-button',
+    imports: [],
+    template: `
     <button 
       class="mute-button" 
       [class.muted]="isMuted"
@@ -16,7 +15,7 @@ import { SettingsService } from '../../../services/settings.service';
       <span class="icon">{{ isMuted ? '🔇' : '🔊' }}</span>
     </button>
   `,
-  styles: [`
+    styles: [`
     .mute-button {
       position: fixed;
       top: 20px;

@@ -1,19 +1,19 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SoundService } from '../services/sound.service';
-import { CommonModule } from '@angular/common';
+
 import { BgmService } from '../services/bgm.service';
 import { Router } from '@angular/router';
 import { buttonPressAnimation } from '../shared/animations';
 import { BackgroundService } from '../services/background.service';
 import { MuteButtonComponent } from '../shared/components/mute-button/mute-button.component';
+import { UserService } from '../services/user.service';
 
 @Component({
-  selector: 'app-home',
-  standalone: true,
-  imports: [CommonModule, MuteButtonComponent],
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss'],
-  animations: [buttonPressAnimation]
+    selector: 'app-home',
+    imports: [MuteButtonComponent],
+    templateUrl: './home.component.html',
+    styleUrls: ['./home.component.scss'],
+    animations: [buttonPressAnimation]
 })
 export class HomeComponent implements OnInit, OnDestroy {
 
@@ -37,7 +37,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     private soundService: SoundService,
     private bgmService: BgmService,
     private router: Router,
-    private backgroundService: BackgroundService
+    private backgroundService: BackgroundService,
+    private userService: UserService
   ) {}
 
   async ngOnInit(): Promise<void> {
@@ -133,7 +134,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     }, 200);
   }
 
-  onGalleryClick(): void {
+  onConfigClick(): void {
     this.galleryPressed = true;
     if (this.servicesInitialized) {
       try {
@@ -146,6 +147,28 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.router.navigate(['/config']);
       this.galleryPressed = false;
     }, 200);
+  }
+
+  onGalleryClick(): void {
+    this.galleryPressed = true;
+    if (this.servicesInitialized) {
+      try {
+        this.soundService.play('gallery');
+      } catch (error) {
+        console.warn('Failed to play gallery sound:', error);
+      }
+    }
+    setTimeout(() => {
+      this.router.navigate(['/gallery']);
+      this.galleryPressed = false;
+    }, 200);
+  }
+
+  onHealthCheckClick(): void {
+    this.userService.checkHealth().subscribe({
+      next: (response) => window.alert(response.status === 200 ? 'OK' : 'NG'),
+      error: () => window.alert('NG')
+    });
   }
 
   playButtonSound(): void {

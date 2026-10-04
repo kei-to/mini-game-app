@@ -42,9 +42,10 @@ export class HomeComponent implements OnInit, OnDestroy {
   ) {}
 
   async ngOnInit(): Promise<void> {
+    this.backgroundPath = this.backgroundService.getBackgroundPath('home');
+
     try {
       await this.initializeServices();
-      this.backgroundPath = this.backgroundService.getBackgroundPath('home');
     } catch (error) {
       console.error('Failed to initialize services:', error);
     }
